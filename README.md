@@ -11,8 +11,8 @@ Le code Python ne contient pas la partie rédigée, seulement le code à exécut
 <br>
 
 Groupe de classe I1 C3 :
-<br>
-Nacedo SAMPER
-Samuel PEYBERNES
-Adrien SEGURA
-Willan DONNETTE
+<br> <br>
+Nacedo SAMPER <br>
+Samuel PEYBERNES <br>
+Adrien SEGURA <br> 
+Willam DONNETTE <br>
