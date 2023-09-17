@@ -262,3 +262,92 @@ plt.ylabel('Lattitude')
 plt.title('Nuage de points')
 
 plt.show()
+
+
+# Modèle 2, Version 1
+
+COLUMNS_OF_INTEREST = ["Synthese_eval_sanit", "geores", "Libelle_commune", "Date_inspection"]
+
+df = data[COLUMNS_OF_INTEREST].dropna()
+df[['lat', 'lng']] = df['geores'].str.split(', ', expand=True).astype(float)
+df = df.drop('geores', axis=1)
+df = df[(df['Synthese_eval_sanit'] == 'A améliorer') | (df['Synthese_eval_sanit'] == 'A corriger de manière urgente')]
+df = df[df['lat'] > 30]
+label_encoder = LabelEncoder()
+df['Libelle_commune'] = label_encoder.fit_transform(df['Libelle_commune'])
+df['Date_inspection'] = df['Date_inspection'].apply(lambda x: datetime.fromisoformat(x).timestamp())
+df.describe()
+
+# CREATE 3D GRAPH
+fig = plt.figure()
+ax = fig.add_subplot(111, projection='3d')
+
+ax.scatter(df['lng'], df['Date_inspection'], df['lat'], c='b', marker='o', s=1)
+
+ax.set_xlabel('Longitude')
+ax.set_ylabel('Temps')
+ax.set_zlabel('Lattitude')
+
+plt.title('Scatter Plot en 3D')
+
+plt.show()
+
+k = 400
+
+kmeans = KMeans(n_clusters=k)
+
+kmeans.fit(df[['lat', 'lng', 'Date_inspection']])
+
+labels = kmeans.labels_
+
+df['Cluster'] = labels
+
+df.head()
+
+
+fig = plt.figure()
+ax = fig.add_subplot(111, projection='3d')
+
+ax.scatter(df['lng'], df['Date_inspection'], df['lat'], c=labels, cmap='viridis', marker='o', s=1)
+
+ax.set_xlabel('Longitude')
+ax.set_ylabel('Temps')
+ax.set_zlabel('Lattitude')
+
+plt.title('Scatter Plot en 3D')
+
+plt.show()
+
+clusters = df.groupby('Cluster').count()[df.groupby('Cluster').count()['lat'] > 8].index.tolist()
+len(clusters)
+
+
+def set_size(row):
+    if row['Cluster'] in clusters:
+        return 20
+    else:
+        return 1
+
+
+def set_color(row):
+    if row['Cluster'] in clusters:
+        return row['Cluster']
+    else:
+        return 0
+
+
+df['Size'] = df.apply(set_size, axis=1)
+df['Color'] = df.apply(set_color, axis=1)
+
+fig = plt.figure()
+ax = fig.add_subplot(111, projection='3d')
+
+ax.scatter(df['lng'], df['Date_inspection'], df['lat'], c=df['Color'], marker='o', s=df['Size'])
+
+ax.set_xlabel('Longitude')
+ax.set_ylabel('Temps')
+ax.set_zlabel('Lattitude')
+
+plt.title('Scatter Plot en 3D')
+
+plt.show()
