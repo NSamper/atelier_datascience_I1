@@ -7,3 +7,12 @@ Le projet a surtout été réalisé grâce au Notebook Jupyter, et nous recomman
 <br> 
 
 Le code Python ne contient pas la partie rédigée, seulement le code à exécuter. Cependant, comme il était prévu pour être exécuté étape par étape, il se peut qu'il soit un peu encombrant à exécuter d'une traite.
+
+<br>
+
+Groupe de classe I1 C3 :
+<br>
+Nacedo SAMPER
+Samuel PEYBERNES
+Adrien SEGURA
+Willan DONNETTE
